@@ -3,6 +3,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Home from "./pages/Home";
 import Updates from "./pages/Updates";
 import UpdateDetail from "./pages/UpdateDetail";
+import Team from "./pages/Team";
 
 const routes = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const routes = createBrowserRouter([
                         Component: UpdateDetail
                     }
                 ]
+            },
+            {
+                path: "team",
+                Component: Team
             },
         ]
     }
