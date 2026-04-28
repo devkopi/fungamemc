@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Updates from "./pages/Updates";
 import UpdateDetail from "./pages/UpdateDetail";
 import Team from "./pages/Team";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const routes = createBrowserRouter([
     {
@@ -30,6 +32,14 @@ const routes = createBrowserRouter([
             {
                 path: "team",
                 Component: Team
+            },
+            {
+                path: "login",
+                Component: Login
+            },
+            {
+                path: "register",
+                Component: Register
             },
         ]
     }
