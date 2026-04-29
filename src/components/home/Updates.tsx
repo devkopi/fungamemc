@@ -6,13 +6,13 @@ export const Updates = () => {
       date: "27 ABRIL, 2026",
       title: "NUEVA MODALIDAD: SKYBLOCK RPG",
       description: "Hemos lanzado oficialmente nuestra versión más ambiciosa de Skyblock. Nuevas misiones, jefes personalizados y un sistema de economía renovado.",
-      link: "/actualizaciones/skyblock-rpg"
+      link: "/updates/skyblock-rpg"
     },
     {
       date: "25 ABRIL, 2026",
       title: "OPTIMIZACIÓN DE RED EUROPA",
       description: "Mejoramos nuestra infraestructura en Europa para reducir el ping en un 30%. Conexión más estable para todos nuestros jugadores internacionales.",
-      link: "/actualizaciones/red-europa"
+      link: "/updates/red-europa"
     }
   ];
 
@@ -24,7 +24,7 @@ export const Updates = () => {
             <FaSyncAlt className="text-primary-500 animate-spin-slow" />
             ULTIMAS ACTUALIZACIONES
           </h2>
-          <a href="/actualizaciones" className="hidden md:flex items-center gap-2 text-xs font-black tracking-[0.3em] text-primary-500 hover:text-white transition-colors group">
+          <a href="/updates" className="hidden md:flex items-center gap-2 text-xs font-black tracking-[0.3em] text-primary-500 hover:text-white transition-colors group">
             VER TODO <FaChevronRight className="group-hover:translate-x-1 transition-transform" />
           </a>
         </div>

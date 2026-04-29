@@ -29,7 +29,7 @@ export const UpdateCard = ({ date, category, title, description, link }: UpdateC
         {title}
       </h3>
       
-      <p className="text-gray-500 font-medium leading-relaxed mb-10 flex-grow text-sm">
+      <p className="text-gray-500 font-medium leading-relaxed mb-10 grow text-sm">
         {description}
       </p>
 

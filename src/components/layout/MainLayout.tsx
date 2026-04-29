@@ -28,7 +28,7 @@ const MainLayout = () => {
       <main className="grow pt-20">
         <Outlet />
       </main>
-      <Footer />
+      {location.pathname !== '/dashboard' && <Footer />}
     </div>
   )
 }
