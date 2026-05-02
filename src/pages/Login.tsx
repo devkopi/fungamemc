@@ -45,7 +45,7 @@ const Login = () => {
       if (err.response) {
         setError(err.response.data?.error || 'Error del servidor')
       } else if (err.request) {
-        setError('No se pudo conectar al servidor. ¿XAMPP esta corriendo?')
+        setError('No se pudo conectar al servidor')
       } else {
         setError('Error al procesar la solicitud')
       }
@@ -132,7 +132,7 @@ const Login = () => {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full py-5 bg-primary-600 hover:bg-primary-500 text-surface-dark font-black tracking-[0.2em] text-[11px] rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-600/20 uppercase flex items-center justify-center gap-3 mt-4 disabled:opacity-50 disabled:translate-y-0 disabled:cursor-not-allowed"
+              className="w-full py-5 cursor-pointer bg-primary-600 hover:bg-primary-500 text-surface-dark font-black tracking-[0.2em] text-[11px] rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-600/20 uppercase flex items-center justify-center gap-3 mt-4 disabled:opacity-50 disabled:translate-y-0 disabled:cursor-not-allowed"
             >
               {loading ? 'INICIANDO SESION...' : 'INICIAR SESION'}
               <FaChevronRight className="text-[10px]" />

@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# FunGame MC - Portal para el Servidor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto fue desarrollado como una experiencia completa de gestión y visualización para el servidor de FunGame MC. El objetivo principal fue modernizar la presencia web del servidor, ofreciendo una plataforma robusta y segura tanto para los usuarios como para la administración.
 
-Currently, two official plugins are available:
+## Propósito del Proyecto
+La arquitectura fue diseñada para transformar una solicitud tradicional basada en PHP en una solución moderna. Aunque el motor del backend utiliza PHP (a petición del administrador del servidor), se implementó bajo un modelo de API REST. Esto permite que el backend entregue datos estructurados en formato JSON, los cuales son consumidos de manera eficiente por un frontend dinámico construido en React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack Tecnológico
 
-## React Compiler
+### Frontend
+- React: Para una interfaz de usuario reactiva y componentes modulares.
+- Tailwind CSS: Para un diseño personalizado y responsive.
+- React Router: Para una navegación fluida entre páginas (SPA).
+- Vite: Como entorno de desarrollo y bundler de alto rendimiento.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend y Base de Datos
+- PHP: Motor del lado del servidor configurado para actuar como API.
+- XAMPP (Apache): Servidor local para el despliegue del backend.
+- MySQL: Gestor de base de datos relacional.
+- Axios: Para facilitar las peticiones a la API REST.
 
-## Expanding the ESLint configuration
+## Estructura de Datos
+El sistema gestiona la información de la comunidad de manera organizada. Un ejemplo clave es la tabla de Usuarios, diseñada para la seguridad y el control:
+- id: Identificador único.
+- nombre: Nombre de usuario registrado.
+- correo: Dirección de correo electrónico.
+- password: Contraseña almacenada mediante hashing para garantizar la privacidad y seguridad de los datos.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Autenticación y Seguridad
+El proyecto pone un fuerte énfasis en la validación de acceso:
+- Validaciones en Login: El componente de inicio de sesión realiza validaciones exhaustivas antes de procesar cualquier solicitud.
+- Control de Acceso al Dashboard: El acceso al panel está protegido. Se realizan verificaciones constantes para confirmar si el usuario está autenticado antes de permitir la visualización de la sección.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Funcionalidades Principales
+- Dashboard Informativo: Un panel centralizado que actualmente muestra datos estadísticos y de actividad (datos estáticos dentro del componente).
+- Sistema de Novedades (Updates): Visualización dinámica de las últimas actualizaciones del servidor.
+- Autenticación Segura: Sistema de registro e inicio de sesión con manejo de sesiones y validaciones de identidad.
+- Página de Staff: Sección dedicada a presentar al equipo del servidor.
+- Copiado Rápido de IP: Acceso directo a la dirección del servidor con un solo clic.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+Proyecto desarrollado para potenciar el servidor de FunGame MC.

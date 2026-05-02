@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router'
-import { FaChevronLeft, FaCalendarAlt, FaTag, FaShareAlt } from 'react-icons/fa'
+import { FaChevronLeft, FaCalendarAlt, FaShareAlt } from 'react-icons/fa'
 
 const UpdateDetail = () => {
   const { slug } = useParams()
