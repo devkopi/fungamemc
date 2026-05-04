@@ -6,14 +6,25 @@ import {
   HiOutlineCog,
   HiOutlineLogout 
 } from 'react-icons/hi'
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  onLogout: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, }) => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  }
+
+
+
   const menuItems = [
     { id: 'overview', label: 'Resumen', icon: HiOutlineViewGrid },
     { id: 'profile', label: 'Mi Perfil', icon: HiOutlineUser },
@@ -54,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onLogout }) 
       </nav>
 
       <button
-        onClick={onLogout}
+        onClick={handleLogout}
         className="flex items-center gap-4 px-4 py-3 rounded-2xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 mt-auto"
       >
         <HiOutlineLogout size={24} />

@@ -43,7 +43,6 @@ const Dashboard = () => {
           <Sidebar 
             activeTab={activeTab} 
             setActiveTab={setActiveTab} 
-            onLogout={logout} 
           />
         </aside>
 

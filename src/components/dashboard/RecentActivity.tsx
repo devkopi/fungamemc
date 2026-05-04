@@ -1,4 +1,3 @@
-import React from 'react'
 import { GiSparkles } from 'react-icons/gi'
 import {  HiOutlineShoppingBag, HiOutlineLogin } from 'react-icons/hi'
 

@@ -36,7 +36,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-4 shrink-0">
           <NavLink 
             to="/tienda" 
-            className="flex items-center gap-3 px-7 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-surface-dark text-[13px] font-black tracking-[0.2em] rounded-full hover:scale-105 transition-all shadow-lg shadow-primary-500/20 uppercase"
+            className="flex items-center gap-3 px-7 py-2.5 bg-gradient-to-r from-primary-600 to-primary-400 text-white text-[13px] font-black tracking-[0.2em] rounded-full hover:scale-105 transition-all shadow-lg shadow-primary-500/20 uppercase"
           >
             <FaShoppingCart className="text-lg" />
             TIENDA

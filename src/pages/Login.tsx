@@ -1,58 +1,37 @@
 import { Link, useNavigate } from 'react-router'
-import { useState } from 'react'
-import axios from 'axios'
+import { useState, type FormEvent, type ChangeEvent } from 'react'
+import { useAuth } from '../hooks/useAuth'
 import { FaUser, FaLock, FaChevronRight, FaArrowLeft } from 'react-icons/fa'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [localError, setLocalError] = useState('')
+  const { login, loading, error: authError } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     if (!email.trim() || !password.trim()) {
-      setError('Por favor completa todos los campos')
+      setLocalError('Por favor completa todos los campos')
       return
     }
 
-    setLoading(true)
-    setError('')
+    setLocalError('')
 
-    try {
-      // Crear FormData para enviar como x-www-form-urlencoded
-      const formData = new URLSearchParams()
-      formData.append('email', email.trim())
-      formData.append('password', password)
+    const success = await login({
+      email: email.trim(),
+      password: password
+    })
 
-      const response = await axios.post('http://localhost/api/login.php', formData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-
-      if (response.data.success) {
-        console.log('Usuario logueado:', response.data.user)
-        navigate('/dashboard')
-      } else {
-        setError(response.data.error || 'Credenciales incorrectas')
-      }
-    } catch (err) {
-      console.error('Error de conexion:', err)
-      if (err.response) {
-        setError(err.response.data?.error || 'Error del servidor')
-      } else if (err.request) {
-        setError('No se pudo conectar al servidor')
-      } else {
-        setError('Error al procesar la solicitud')
-      }
-    } finally {
-      setLoading(false)
+    if (success) {
+      navigate('/dashboard')
     }
   }
+
+  const error = localError || authError
+
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center relative overflow-hidden px-6 py-20">
@@ -98,7 +77,7 @@ const Login = () => {
                   type="text" 
                   placeholder="Steve27"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                   className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/[0.08] transition-all placeholder:text-gray-700"
                   disabled={loading}
                 />
@@ -122,7 +101,7 @@ const Login = () => {
                   type="password" 
                   placeholder="••••••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/[0.08] transition-all placeholder:text-gray-700"
                   disabled={loading}
                 />
