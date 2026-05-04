@@ -7,7 +7,7 @@ import RecentActivity from '../components/dashboard/RecentActivity'
 import { HiOutlineLightningBolt } from 'react-icons/hi'
 
 const Dashboard = () => {
-  const { user, loading, logout } = useAuth()
+  const { user, loading } = useAuth()
   const [activeTab, setActiveTab] = useState('overview')
 
   if (loading) {
