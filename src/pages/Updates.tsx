@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { UpdateCard } from '../components/updates/UpdateCard'
 import { getUpdates } from '../api/updatesApi'
 import type { Update } from '../api/types'
+import UpdateSkeleton from '../components/updates/UpdateSkeleton'
 
 const Updates = () => {
   const [updates, setUpdates] = useState<Update[]>([])
@@ -52,9 +53,10 @@ const Updates = () => {
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-12 h-12 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin mb-4"></div>
-            <p className="text-gray-500 font-bold">Cargando noticias...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <UpdateSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
           <div className="card-solid p-12 text-center">
@@ -73,6 +75,7 @@ const Updates = () => {
                 title={update.title}
                 description={update.content}
                 date={new Date(update.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                author={update.author}
               />
             ))}
           </div>

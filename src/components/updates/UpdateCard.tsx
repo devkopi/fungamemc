@@ -5,10 +5,12 @@ interface UpdateCardProps {
   date: string
   title: string
   description: string
-  status?: string
+  author?: {
+    username: string
+  }
 }
 
-export const UpdateCard = ({ id, date, title, description }: UpdateCardProps) => {
+export const UpdateCard = ({ id, date, title, description, author }: UpdateCardProps) => {
   return (
     <a 
       href={`/updates/${id}`}
@@ -33,8 +35,22 @@ export const UpdateCard = ({ id, date, title, description }: UpdateCardProps) =>
         {description}
       </p>
 
-      <div className="flex items-center gap-3 text-xs font-black text-white/40 group-hover:text-white transition-all transform group-hover:translate-x-2 italic uppercase">
-        LEER ARTÍCULO COMPLETO <FaChevronRight className="text-[10px]" />
+      <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded bg-white/5 border border-white/10 overflow-hidden">
+            <img 
+              src={`https://mc-heads.net/avatar/${author?.username || 'Steve'}/32`} 
+              alt={author?.username}
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <span className="text-[10px] font-black tracking-widest text-primary-500 uppercase">
+            {author?.username || 'Staff'}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-[10px] font-black text-white/40 group-hover:text-white transition-all transform group-hover:translate-x-1 italic uppercase">
+          LEER <FaChevronRight className="text-[10px]" />
+        </div>
       </div>
     </a>
   )

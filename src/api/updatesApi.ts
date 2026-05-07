@@ -1,18 +1,37 @@
-import apiClient from './axiosConfig'
-import type { Update, UpdateData, UpdatesResponse, UpdateResponse } from './types'
+import apiClient from './axiosConfig.ts'
+import type { Update, UpdateData, UpdatesResponse, UpdateResponse } from './types.ts'
 
 /**
  * Obtiene todas las actualizaciones
  */
-export const getUpdates = async (): Promise<UpdatesResponse> => {
+export const getUpdates = async (all: boolean = false): Promise<UpdatesResponse> => {
   try {
-    const response = await apiClient.get<UpdatesResponse>('/updates')
-    return response.data
+    const url = all ? '/updates/get_updates.php?status=all' : '/updates/get_updates.php'
+    const response = await apiClient.get<any>(url)
+    const data = response.data
+
+    if (data.success && data.data?.updates) {
+      // Mapear los campos del PHP a nuestra interfaz de TS
+      const updates = data.data.updates.map((u: any) => ({
+        ...u,
+        author: {
+          id: u.author_id,
+          username: u.author_name
+        }
+      }))
+      return { success: true, updates }
+    }
+
+    return {
+      success: false,
+      updates: [],
+      error: data.message || 'Error al obtener las actualizaciones'
+    }
   } catch (error: any) {
     return {
       success: false,
       updates: [],
-      error: error.response?.data?.error || 'Error al obtener las actualizaciones'
+      error: error.response?.data?.message || 'Error de conexión'
     }
   }
 }
@@ -22,13 +41,31 @@ export const getUpdates = async (): Promise<UpdatesResponse> => {
  */
 export const getUpdate = async (id: number): Promise<UpdateResponse> => {
   try {
-    const response = await apiClient.get<UpdateResponse>(`/updates/${id}`)
-    return response.data
+    const response = await apiClient.get<any>(`/updates/get_update.php?id=${id}`)
+    const data = response.data
+
+    if (data.success && data.data) {
+      const u = data.data
+      const update = {
+        ...u,
+        author: {
+          id: u.author_id,
+          username: u.author_name
+        }
+      }
+      return { success: true, update }
+    }
+
+    return {
+      success: false,
+      update: {} as Update,
+      error: data.message || 'Error al obtener la actualización'
+    }
   } catch (error: any) {
     return {
       success: false,
       update: {} as Update,
-      error: error.response?.data?.error || 'Error al obtener la actualización'
+      error: error.response?.data?.message || 'Error de conexión'
     }
   }
 }
@@ -38,7 +75,7 @@ export const getUpdate = async (id: number): Promise<UpdateResponse> => {
  */
 export const createUpdate = async (data: UpdateData): Promise<UpdateResponse> => {
   try {
-    const response = await apiClient.post<UpdateResponse>('/updates', data)
+    const response = await apiClient.post<UpdateResponse>('/updates/create_updates.php', data)
     return response.data
   } catch (error: any) {
     return {
@@ -54,7 +91,9 @@ export const createUpdate = async (data: UpdateData): Promise<UpdateResponse> =>
  */
 export const updateUpdate = async (id: number, data: UpdateData): Promise<UpdateResponse> => {
   try {
-    const response = await apiClient.put<UpdateResponse>(`/updates/${id}`, data)
+    // Nota: Usamos POST o PUT dependiendo de cómo lo maneje tu PHP, 
+    // pero incluimos el ID en el body o query
+    const response = await apiClient.post<UpdateResponse>(`/updates/edit_updates.php?id=${id}`, data)
     return response.data
   } catch (error: any) {
     return {
@@ -70,7 +109,7 @@ export const updateUpdate = async (id: number, data: UpdateData): Promise<Update
  */
 export const deleteUpdate = async (id: number): Promise<{ success: boolean; error?: string }> => {
   try {
-    const response = await apiClient.delete(`/updates/${id}`)
+    const response = await apiClient.post(`/updates/delete_updates.php?id=${id}`)
     return response.data
   } catch (error: any) {
     return {

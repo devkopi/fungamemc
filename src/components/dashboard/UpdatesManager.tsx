@@ -15,7 +15,7 @@ const UpdatesManager = () => {
 
   const fetchUpdates = async () => {
     setLoading(true)
-    const response = await getUpdates()
+    const response = await getUpdates(true)
     if (response.success) {
       setUpdates(response.updates)
       setError(null)

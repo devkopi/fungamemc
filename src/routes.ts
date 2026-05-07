@@ -6,6 +6,8 @@ import UpdateDetail from "./pages/UpdateDetail";
 import Team from "./pages/Team";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 
 const routes = createBrowserRouter([
@@ -41,6 +43,14 @@ const routes = createBrowserRouter([
             {
                 path: "register",
                 Component: Register
+            },
+            {
+                path: "forgot-password",
+                Component: ForgotPassword
+            },
+            {
+                path: "reset-password",
+                Component: ResetPassword
             },
             {
                 path: "dashboard",

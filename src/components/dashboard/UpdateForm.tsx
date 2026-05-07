@@ -44,10 +44,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ update, onClose, onSucce
       if (response.success) {
         onSuccess()
       } else {
+        // Mostrar el error específico del servidor si existe
         setError(response.error || 'Error al guardar la actualización')
+        console.error('[UpdateForm Error]', response)
       }
-    } catch (err) {
-      setError('Error de conexión')
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message || 'Error de conexión')
+      console.error('[UpdateForm Connection Error]', err)
     } finally {
       setLoading(false)
     }

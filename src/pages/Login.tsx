@@ -79,7 +79,7 @@ const Login = () => {
                   placeholder="Steve27"
                   value={email}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                  className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/[0.08] transition-all placeholder:text-gray-700"
+                  className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/8 transition-all placeholder:text-gray-700"
                   disabled={loading}
                 />
               </div>
@@ -90,9 +90,9 @@ const Login = () => {
                 <label className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
                   CONTRASENA
                 </label>
-                <a href="#" className="text-[10px] font-black tracking-widest text-primary-500/60 hover:text-primary-500 transition-colors uppercase">
+                <Link to="/forgot-password" className="text-[10px] font-black tracking-widest text-primary-500/60 hover:text-primary-500 transition-colors uppercase">
                   OLVIDASTE TU CLAVE?
-                </a>
+                </Link>
               </div>
               <div className="relative group/input">
                 <div className="absolute inset-y-0 left-5 flex items-center text-gray-500 group-focus-within/input:text-primary-500 transition-colors">
@@ -103,7 +103,7 @@ const Login = () => {
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-14 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/[0.08] transition-all placeholder:text-gray-700"
+                  className="w-full bg-white/5 border border-white/5 rounded-xl py-4 pl-14 pr-14 text-sm font-medium focus:outline-none focus:border-primary-500/50 focus:bg-white/8 transition-all placeholder:text-gray-700"
                   disabled={loading}
                 />
                 <button

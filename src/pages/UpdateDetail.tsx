@@ -100,8 +100,12 @@ const UpdateDetail = () => {
             <div className="card-solid p-8">
               <h4 className="text-xs font-black tracking-widest mb-6 uppercase text-gray-500">AUTOR</h4>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-600/10 border border-primary-500/20 rounded-xl flex items-center justify-center font-black text-primary-500 uppercase">
-                  {update.author?.username?.charAt(0) || 'A'}
+                <div className="w-12 h-12 relative">
+                  <img 
+                    src={`https://mc-heads.net/avatar/${update.author?.username || 'Steve'}/64`} 
+                    alt={update.author?.username}
+                    className="w-full h-full rounded-xl object-contain bg-primary-600/10 border border-primary-500/20 p-1"
+                  />
                 </div>
                 <div>
                   <p className="text-sm font-black italic uppercase text-white">{update.author?.username || 'Administración'}</p>

@@ -3,17 +3,29 @@ import { useAuth } from '../hooks/useAuth'
 import Sidebar from '../components/dashboard/Sidebar'
 import ProfileSummary from '../components/dashboard/ProfileSummary'
 import UpdatesManager from '../components/dashboard/UpdatesManager'
+import Skeleton from '../components/ui/Skeleton'
+import DashboardSkeleton from '../components/dashboard/DashboardSkeleton'
 
 const Dashboard = () => {
-  const { user, loading } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [activeTab, setActiveTab] = useState('overview')
 
-  if (loading) {
+  // Si aún está cargando la sesión, mostramos el Skeleton Premium
+  if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-dark">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin"></div>
-          <p className="text-gray-400 font-bold animate-pulse">Cargando tu panel...</p>
+      <div className="min-h-screen bg-surface-dark p-6 md:p-8 lg:p-12">
+        <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-8">
+          <aside className="hidden lg:block w-64 h-fit sticky top-28">
+             <div className="card-solid p-6 space-y-6">
+                <Skeleton className="h-10 w-full rounded-xl" />
+                <Skeleton className="h-10 w-full rounded-xl opacity-70" />
+                <Skeleton className="h-10 w-full rounded-xl opacity-50" />
+                <Skeleton className="h-10 w-full rounded-xl opacity-30" />
+             </div>
+          </aside>
+          <div className="flex-1">
+            <DashboardSkeleton />
+          </div>
         </div>
       </div>
     )
