@@ -7,7 +7,6 @@ const Register = () => {
   // Estados para cada campo del formulario
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
-  const [minecraftUsername, setMinecraftUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordRepeat, setPasswordRepeat] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
