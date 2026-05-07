@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
 import { HiOutlineCheckCircle, HiOutlineExclamationCircle, HiOutlineX } from 'react-icons/hi'
 
 type ToastType = 'success' | 'error' | 'info'
@@ -19,7 +19,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const showNotification = useCallback((message: string, type: ToastType = 'success') => {
-    const id = Math.random().toString(36).substr(2, 9)
+    const id = Math.random().toString(36).substring(2, 11)
     setToasts((prev) => [...prev, { id, message, type }])
 
     // Auto eliminar después de 4 segundos

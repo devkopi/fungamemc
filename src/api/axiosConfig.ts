@@ -3,7 +3,7 @@ import type { AxiosInstance } from 'axios'
 
 // Configuración base de la API
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost/fungamemc-backend/api',
+  baseURL: import.meta.env.VITE_API_URL || '/fungamemc-backend/api',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
