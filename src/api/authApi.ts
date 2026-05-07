@@ -89,4 +89,53 @@ export const getMe = async (): Promise<MeResponse> => {
 export const logout = async (): Promise<LogoutResponse> => {
   const response = await apiClient.post<LogoutResponse>('/auth/logout.php')
   return response.data
-}
+}
+
+/**
+ * Solicita un enlace de recuperación de contraseña
+ */
+export const requestPasswordReset = async (email: string): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await apiClient.post('/auth/request_reset.php', { email })
+    return response.data
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error al solicitar la recuperación'
+    }
+  }
+}
+
+/**
+ * Verifica si un token de recuperación es válido
+ */
+export const verifyResetToken = async (token: string): Promise<{ success: boolean; message?: string; email?: string }> => {
+  try {
+    const response = await apiClient.get(`/auth/verify_token.php?token=${token}`)
+    return response.data
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Token inválido o expirado'
+    }
+  }
+}
+
+/**
+ * Restablece la contraseña usando un token
+ */
+export const resetPassword = async (token: string, password: string): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await apiClient.post('/auth/reset_password.php', { 
+      token, 
+      password,
+      password_repeat: password
+    })
+    return response.data
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error al restablecer la contraseña'
+    }
+  }
+}

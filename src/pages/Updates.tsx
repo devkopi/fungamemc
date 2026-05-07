@@ -1,46 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { UpdateCard } from '../components/updates/UpdateCard'
-import { FaFilter } from 'react-icons/fa'
+import { getUpdates } from '../api/updatesApi'
+import type { Update } from '../api/types'
+import UpdateSkeleton from '../components/updates/UpdateSkeleton'
 
 const Updates = () => {
-  const [activeCategory, setActiveCategory] = useState('TODAS')
-  
-  const categories = ['TODAS', 'GENERAL', 'SERVIDOR', 'TIENDA', 'EVENTOS']
+  const [updates, setUpdates] = useState<Update[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const updatesData = [
-    {
-      date: "27 ABRIL, 2026",
-      category: "SERVIDOR",
-      title: "NUEVA MODALIDAD: SKYBLOCK RPG",
-      description: "Hemos lanzado oficialmente nuestra versión más ambiciosa de Skyblock. Nuevas misiones, jefes personalizados y un sistema de economía renovado con más de 100 nuevos ítems únicos.",
-      link: "/updates/skyblock-rpg"
-    },
-    {
-      date: "25 ABRIL, 2026",
-      category: "GENERAL",
-      title: "OPTIMIZACIÓN DE RED EUROPA",
-      description: "Mejoramos nuestra infraestructura en Europa para reducir el ping en un 30%. Conexión más estable para todos nuestros jugadores internacionales gracias a nuestros nuevos nodos en Madrid.",
-      link: "/updates/red-europa"
-    },
-    {
-      date: "20 ABRIL, 2026",
-      category: "TIENDA",
-      title: "REBAJAS DE PRIMAVERA: -25%",
-      description: "Aprovecha descuentos exclusivos en todos los rangos y llaves de la tienda. Solo por tiempo limitado, ¡mejora tu equipo ahora!",
-      link: "/tienda"
-    },
-    {
-      date: "15 ABRIL, 2026",
-      category: "EVENTOS",
-      title: "TORNEO PVP: LA GRAN BATALLA",
-      description: "Inscríbete en el torneo mensual de Box PvP. Premios en metálico y rangos exclusivos para los 3 mejores guerreros de la red.",
-      link: "/updates/torneo-pvp"
+  useEffect(() => {
+    const fetchUpdates = async () => {
+      setLoading(true)
+      const response = await getUpdates()
+      if (response.success) {
+        // Solo mostrar actualizaciones publicadas en la página global
+        setUpdates(response.updates.filter(u => u.status === 'published'))
+      } else {
+        setError(response.error || 'Error al cargar las actualizaciones')
+      }
+      setLoading(false)
     }
-  ]
 
-  const filteredUpdates = activeCategory === 'TODAS' 
-    ? updatesData 
-    : updatesData.filter(u => u.category === activeCategory)
+    fetchUpdates()
+  }, [])
 
   return (
     <div className="animate-fade-in pb-32">
@@ -48,33 +31,13 @@ const Updates = () => {
         <div className="absolute inset-0 bg-primary-600/5 -z-10 blur-[120px] rounded-full -translate-y-1/2"></div>
         
         <div className="container mx-auto px-6">
-          <div className="max-w-3xl mb-16">
+          <div className="max-w-3xl">
             <h1 className="text-6xl font-black tracking-tighter italic uppercase mb-6 leading-tight">
               CENTRO DE <span className="text-primary-500">ACTUALIZACIONES</span>
             </h1>
             <p className="text-gray-500 font-medium text-lg leading-relaxed max-w-xl">
               Mantente al día con todas las novedades, cambios y eventos que ocurren en la red de FungameMC.
             </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-3 text-primary-500 mr-4">
-              <FaFilter className="text-xs" />
-              <span className="text-[10px] font-black tracking-widest uppercase">FILTRAR</span>
-            </div>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`text-[11px] font-black tracking-[0.2em] px-6 py-2.5 rounded-full transition-all ${
-                  activeCategory === cat 
-                  ? 'bg-primary-600 text-surface-dark' 
-                  : 'text-gray-500 hover:text-white bg-white/5 border border-white/5'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
           </div>
         </div>
       </section>
@@ -85,15 +48,38 @@ const Updates = () => {
             ÚLTIMAS PUBLICACIONES
           </h2>
           <span className="text-[10px] font-black tracking-widest text-gray-700 uppercase">
-            {filteredUpdates.length} ARTÍCULOS ENCONTRADOS
+            {updates.length} ARTÍCULOS ENCONTRADOS
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          {filteredUpdates.map((update, index) => (
-            <UpdateCard key={index} {...update} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <UpdateSkeleton key={i} />
+            ))}
+          </div>
+        ) : error ? (
+          <div className="card-solid p-12 text-center">
+            <p className="text-red-500 font-bold">{error}</p>
+          </div>
+        ) : updates.length === 0 ? (
+          <div className="card-solid p-12 text-center">
+            <p className="text-gray-500 font-medium">No se encontraron actualizaciones publicadas.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {updates.map((update) => (
+              <UpdateCard 
+                key={update.id} 
+                id={update.id}
+                title={update.title}
+                description={update.content}
+                date={new Date(update.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                author={update.author}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   )
