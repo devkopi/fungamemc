@@ -1,14 +1,17 @@
 import { Link, useNavigate } from 'react-router'
 import { useState } from 'react'
-import { FaUser, FaEnvelope, FaLock, FaChevronRight, FaArrowLeft } from 'react-icons/fa'
+import { FaUser, FaEnvelope, FaLock, FaChevronRight, FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useAuth } from '../hooks/useAuth'
 
 const Register = () => {
   // Estados para cada campo del formulario
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
+  const [minecraftUsername, setMinecraftUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordRepeat, setPasswordRepeat] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false)
   
   // Estados para errores específicos por campo
   const [usernameError, setUsernameError] = useState<string>('')
@@ -19,7 +22,7 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   
   const navigate = useNavigate()
-  const { register, loading: authLoading } = useAuth()
+  const { register, loading: authLoading, error: authError } = useAuth()
 
   // Validar el formulario antes de enviar
   const validateForm = (): boolean => {
@@ -92,9 +95,6 @@ const Register = () => {
     if (success) {
       // Registro exitoso, redirigir al dashboard
       navigate('/dashboard')
-    } else {
-      // Mostrar error general (ej: "email ya existe")
-      setGeneralError('No se pudo crear la cuenta. El email o usuario puede estar en uso.')
     }
     
     setIsSubmitting(false)
@@ -127,10 +127,10 @@ const Register = () => {
             </p>
           </div>
 
-          {/* Error general (del servidor) */}
-          {generalError && (
+          {/* Error general (del servidor o validación) */}
+          {(generalError || authError) && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-              <p className="text-red-400 text-xs font-bold text-center">{generalError}</p>
+              <p className="text-red-400 text-xs font-bold text-center">{generalError || authError}</p>
             </div>
           )}
 
@@ -195,15 +195,22 @@ const Register = () => {
                   <FaLock className="text-sm" />
                 </div>
                 <input 
-                  type="password" 
+                  type={showPassword ? 'text' : 'password'} 
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
-                  className={`w-full bg-white/5 border rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:bg-white/[0.08] transition-all placeholder:text-gray-700 disabled:opacity-50 ${
+                  className={`w-full bg-white/5 border rounded-xl py-4 pl-14 pr-14 text-sm font-medium focus:outline-none focus:bg-white/[0.08] transition-all placeholder:text-gray-700 disabled:opacity-50 ${
                     passwordError ? 'border-red-500/50 focus:border-red-500' : 'border-white/5 focus:border-primary-500/50'
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-5 flex items-center text-gray-500 hover:text-primary-500 transition-colors cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash className="text-sm" /> : <FaEye className="text-sm" />}
+                </button>
               </div>
             </div>
 
@@ -217,15 +224,22 @@ const Register = () => {
                   <FaLock className="text-sm" />
                 </div>
                 <input 
-                  type="password" 
+                  type={showPasswordRepeat ? 'text' : 'password'} 
                   placeholder="••••••••••••"
                   value={passwordRepeat}
                   onChange={(e) => setPasswordRepeat(e.target.value)}
                   disabled={isLoading}
-                  className={`w-full bg-white/5 border rounded-xl py-4 pl-14 pr-6 text-sm font-medium focus:outline-none focus:bg-white/[0.08] transition-all placeholder:text-gray-700 disabled:opacity-50 ${
+                  className={`w-full bg-white/5 border rounded-xl py-4 pl-14 pr-14 text-sm font-medium focus:outline-none focus:bg-white/[0.08] transition-all placeholder:text-gray-700 disabled:opacity-50 ${
                     passwordError ? 'border-red-500/50 focus:border-red-500' : 'border-white/5 focus:border-primary-500/50'
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordRepeat(!showPasswordRepeat)}
+                  className="absolute inset-y-0 right-5 flex items-center text-gray-500 hover:text-primary-500 transition-colors cursor-pointer"
+                >
+                  {showPasswordRepeat ? <FaEyeSlash className="text-sm" /> : <FaEye className="text-sm" />}
+                </button>
               </div>
               {passwordError && (
                 <p className="text-red-400 text-[10px] font-bold ml-1">{passwordError}</p>

@@ -3,17 +3,20 @@ import type { AxiosInstance } from 'axios'
 
 // Configuración base de la API
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost/api',
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost/fungamemc-backend/api',
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   },
-  timeout: 10000
+  withCredentials: true
 })
 
-// Interceptor para logging
+// Interceptor para agregar token
 apiClient.interceptors.request.use((config) => {
-  console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`)
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 })
 

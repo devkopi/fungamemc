@@ -5,47 +5,88 @@ import type {
   RegisterCredentials,
   RegisterResponse,
   MeResponse,
-  LogoutResponse 
+  LogoutResponse
 } from './types'
 
-const toFormData = (data: Record<string, string>): URLSearchParams => {
-  const formData = new URLSearchParams()
-  Object.entries(data).forEach(([key, value]) => {
-    formData.append(key, value)
-  })
-  return formData
-}
-
 export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
-  const formData = toFormData({
+  const response = await apiClient.post<any>('/auth/login.php', {
     email: credentials.email.trim(),
     password: credentials.password
   })
+  
+  const responseData = response.data
+  console.log('[API Login Response]', responseData)
+  let user = responseData.user || responseData.data
+  
+  if (!user && (responseData.user_id || responseData.id)) {
+    user = responseData
+  }
 
-  const response = await apiClient.post<LoginResponse>('/login.php', formData)
-  return response.data
+  if (user) {
+    if (!user.id && user.user_id) {
+      user.id = user.user_id
+    }
+  }
+  
+  return {
+    ...responseData,
+    user,
+    error: responseData.error || responseData.message
+  }
 }
 
 export const register = async (data: RegisterCredentials): Promise<RegisterResponse> => {
-  const formData = toFormData({
+  const response = await apiClient.post<any>('/auth/register.php', {
     username: data.username.trim(),
     email: data.email.trim(),
     password: data.password,
     password_repeat: data.password_repeat
   })
 
+  const responseData = response.data
+  console.log('[API Register Response]', responseData)
+  let user = responseData.user || responseData.data
+  
+  if (!user && (responseData.user_id || responseData.id)) {
+    user = responseData
+  }
 
-  // Petición POST a register.php
-  const response = await apiClient.post<RegisterResponse>('/register.php', formData)
-  return response.data
+  if (user) {
+    if (!user.id && user.user_id) {
+      user.id = user.user_id
+    }
+  }
+
+  return {
+    ...responseData,
+    user,
+    error: responseData.error || responseData.message
+  }
 }
 
 export const getMe = async (): Promise<MeResponse> => {
-  const response = await apiClient.get<MeResponse>('/me.php')
-  return response.data
+  const response = await apiClient.get<any>('/auth/me.php')
+  const responseData = response.data
+  let user = responseData.user || responseData.data
+  
+  if (!user && (responseData.user_id || responseData.id)) {
+    user = responseData
+  }
+
+  if (user) {
+    if (!user.id && user.user_id) {
+      user.id = user.user_id
+    }
+  }
+  
+  return {
+    ...responseData,
+    user,
+    error: responseData.error || responseData.message
+  }
 }
 
 export const logout = async (): Promise<LogoutResponse> => {
-  const response = await apiClient.post<LogoutResponse>('/logout.php')
+  const response = await apiClient.post<LogoutResponse>('/auth/logout.php')
   return response.data
-}
+}
