@@ -1,17 +1,17 @@
 import { FaChevronRight, FaTag, FaCalendarAlt } from 'react-icons/fa'
 
 interface UpdateCardProps {
+  id: number
   date: string
-  category: string
   title: string
   description: string
-  link: string
+  status?: string
 }
 
-export const UpdateCard = ({ date, category, title, description, link }: UpdateCardProps) => {
+export const UpdateCard = ({ id, date, title, description }: UpdateCardProps) => {
   return (
     <a 
-      href={link}
+      href={`/updates/${id}`}
       className="group card-solid p-8 hover:border-primary-500/30 transition-all duration-500 flex flex-col h-full"
     >
       <div className="flex items-center justify-between mb-6">
@@ -21,7 +21,7 @@ export const UpdateCard = ({ date, category, title, description, link }: UpdateC
         </span>
         <span className="px-3 py-1 bg-white/5 border border-white/5 text-[9px] font-black tracking-widest text-gray-400 rounded-full flex items-center gap-2">
           <FaTag />
-          {category}
+          GENERAL
         </span>
       </div>
 
@@ -29,7 +29,7 @@ export const UpdateCard = ({ date, category, title, description, link }: UpdateC
         {title}
       </h3>
       
-      <p className="text-gray-500 font-medium leading-relaxed mb-10 grow text-sm">
+      <p className="text-gray-500 font-medium leading-relaxed mb-10 grow text-sm line-clamp-3">
         {description}
       </p>
 

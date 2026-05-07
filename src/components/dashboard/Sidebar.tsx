@@ -4,7 +4,8 @@ import {
   HiOutlineUser, 
   HiOutlineChartBar, 
   HiOutlineCog,
-  HiOutlineLogout 
+  HiOutlineLogout,
+  HiOutlinePencilAlt
 } from 'react-icons/hi'
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router';
@@ -15,7 +16,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -23,14 +24,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, }) => {
     navigate('/login');
   }
 
-
-
   const menuItems = [
     { id: 'overview', label: 'Resumen', icon: HiOutlineViewGrid },
     { id: 'profile', label: 'Mi Perfil', icon: HiOutlineUser },
+    { id: 'updates', label: 'Updates', icon: HiOutlinePencilAlt, hidden: !user?.permissions?.can_create_updates },
     { id: 'stats', label: 'Estadísticas', icon: HiOutlineChartBar },
     { id: 'settings', label: 'Ajustes', icon: HiOutlineCog },
-  ]
+  ].filter(item => !item.hidden)
 
   return (
     <div className="w-64 glass h-[calc(100vh-4rem)] rounded-3xl p-6 flex flex-col gap-8">

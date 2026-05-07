@@ -25,7 +25,7 @@ const routes = createBrowserRouter([
                         Component: Updates
                     },
                     {
-                        path: ":slug",
+                        path: ":id",
                         Component: UpdateDetail
                     }
                 ]
