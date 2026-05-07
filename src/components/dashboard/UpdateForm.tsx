@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { HiOutlineX, HiOutlineSave } from 'react-icons/hi'
 import { createUpdate, updateUpdate } from '../../api/updatesApi.ts'
 import type { Update, UpdateData } from '../../api/types.ts'
+import { useNotification } from '../../context/NotificationContext.tsx'
 
 interface UpdateFormProps {
   update?: Update | null
@@ -10,6 +11,7 @@ interface UpdateFormProps {
 }
 
 export const UpdateForm: React.FC<UpdateFormProps> = ({ update, onClose, onSuccess }) => {
+  const { showNotification } = useNotification()
   const [formData, setFormData] = useState<UpdateData>({
     title: '',
     content: '',
@@ -42,10 +44,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ update, onClose, onSucce
       }
 
       if (response.success) {
+        showNotification(update ? 'Noticia actualizada' : 'Noticia publicada', 'success')
         onSuccess()
       } else {
         // Mostrar el error específico del servidor si existe
-        setError(response.error || 'Error al guardar la actualización')
+        const msg = response.error || 'Error al guardar la actualización'
+        setError(msg)
+        showNotification(msg, 'error')
         console.error('[UpdateForm Error]', response)
       }
     } catch (err: any) {

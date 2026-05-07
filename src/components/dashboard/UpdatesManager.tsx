@@ -4,9 +4,11 @@ import { getUpdates, deleteUpdate } from '../../api/updatesApi.ts'
 import type { Update } from '../../api/types.ts'
 import { UpdateForm } from './UpdateForm.tsx'
 import { useAuth } from '../../hooks/useAuth.ts'
+import { useNotification } from '../../context/NotificationContext.tsx'
 
 const UpdatesManager = () => {
   const { user } = useAuth()
+  const { showNotification } = useNotification()
   const [updates, setUpdates] = useState<Update[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -35,8 +37,9 @@ const UpdatesManager = () => {
     const response = await deleteUpdate(id)
     if (response.success) {
       setUpdates(updates.filter(u => u.id !== id))
+      showNotification('Noticia eliminada correctamente', 'success')
     } else {
-      alert(response.error || 'Error al eliminar')
+      showNotification(response.message || response.error || 'Error al eliminar', 'error')
     }
   }
 

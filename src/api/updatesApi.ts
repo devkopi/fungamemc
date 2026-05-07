@@ -107,14 +107,16 @@ export const updateUpdate = async (id: number, data: UpdateData): Promise<Update
 /**
  * Elimina una actualización
  */
-export const deleteUpdate = async (id: number): Promise<{ success: boolean; error?: string }> => {
+export const deleteUpdate = async (id: number): Promise<{ success: boolean; message?: string; error?: string }> => {
   try {
-    const response = await apiClient.post(`/updates/delete_updates.php?id=${id}`)
+    // Tu PHP exige el método DELETE y el ID por la URL (?id=X)
+    const response = await apiClient.delete(`/updates/delete_updates.php?id=${id}`)
     return response.data
   } catch (error: any) {
     return {
       success: false,
-      error: error.response?.data?.error || 'Error al eliminar la actualización'
+      message: error.response?.data?.message || 'Error al eliminar la actualización',
+      error: error.response?.data?.error
     }
   }
 }
